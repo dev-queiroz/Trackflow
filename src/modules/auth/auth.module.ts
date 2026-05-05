@@ -22,4 +22,5 @@ import { PrismaModule } from '../../prisma/prisma.module';
   providers: [AuthService],
   exports: [AuthService, JwtModule],
 })
+/* istanbul ignore next */
 export class AuthModule {}
