@@ -1,98 +1,112 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# TrackFlow API
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+API REST em [NestJS](https://nestjs.com/) para **ingestão de eventos** de produto e **métricas agregadas**, com autenticação JWT, limitação de taxa (rate limiting), observabilidade por **correlation ID**, cache opcional em **Redis** para analytics, e health checks prontos para **Render**, **Railway** ou qualquer orquestrador com Docker.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## Funcionalidades
 
-## Description
+| Área | Detalhe |
+|------|---------|
+| **API versionada** | Rotas em `/v1/*`; OpenAPI em `/docs` |
+| **Auth** | Registro, login, JWT |
+| **Events** | Criação e listagem paginada |
+| **Users** | CRUD organizado: perfil `me`, operações admin, permissões por papel (`USER` / `ADMIN`) |
+| **Analytics** | Contagens e agrupamentos com filtro por período (`24h`, `7d`, `30d`) ou intervalo ISO `from`/`to` |
+| **Cache** | Respostas de analytics cacheadas; Redis via `REDIS_URL` ou memória no processo |
+| **Health** | `GET /health`, `/health/live`, `/health/ready` (Postgres + heap) |
+| **Segurança** | Helmet, validação global de DTOs (whitelist), rate limiting configurável |
+| **Erros** | `HttpExceptionFilter` global com `correlationId` e payload consistente |
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## Stack
 
-## Project setup
+- Node.js 20+, TypeScript  
+- PostgreSQL + [Prisma](https://www.prisma.io/) (driver adapter `pg`)  
+- JWT (`@nestjs/jwt` + Passport)  
+- Logs HTTP: `pino` + `pino-http`  
+- Documentação: Swagger (`/docs`)
 
-```bash
-$ npm install
-```
+## Pré-requisitos
 
-## Compile and run the project
+- Node 20+  
+- PostgreSQL acessível via `DATABASE_URL`  
+- Opcional: Redis para cache de analytics  
 
-```bash
-# development
-$ npm run start
+## Configuração
 
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
-```
-
-## Run tests
+Copie o exemplo de variáveis:
 
 ```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+cp .env.example .env
 ```
 
-## Deployment
+Principais variáveis (ver `.env.example`):
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+- `DATABASE_URL` — connection string PostgreSQL  
+- `JWT_SECRET` — obrigatório em produção  
+- `REDIS_URL` — opcional; sem isto o cache de analytics é em memória  
+- `THROTTLE_TTL_MS` / `THROTTLE_LIMIT` — rate limiting global  
+- `CORS_ORIGIN` — lista separada por vírgula (padrão `*`)  
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+## Banco e seed
 
 ```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
+npm install
+npx prisma migrate deploy
+npx prisma generate
+npm run db:seed
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+O seed cria usuários de demonstração (incluindo `admin@trackflow.com` com papel **ADMIN**) e eventos de exemplo. Senha de demo documentada na saída do comando.
 
-## Resources
+## Executar
 
-Check out a few resources that may come in handy when working with NestJS:
+```bash
+npm run start:dev
+```
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+- API: `http://localhost:3000/v1`  
+- Swagger: `http://localhost:3000/docs`  
+- Liveness: `http://localhost:3000/health/live`  
 
-## Support
+## Docker
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+Build e execução com migrações na subida:
 
-## Stay in touch
+```bash
+docker build -t trackflow-api .
+docker run --rm -p 3000:3000 --env-file .env trackflow-api
+```
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+O `.dockerignore` reduz contexto de build (testes, artefatos locais, etc.).
 
-## License
+## Deploy (Render / Railway)
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+- **Render**: blueprint em [`render.yaml`](./render.yaml) — define serviço web Docker e health check em `/health/live`. Configure `DATABASE_URL` e opcionalmente `REDIS_URL` nos secrets do dashboard.  
+- **Railway**: [`railway.toml`](./railway.toml) aponta para o `Dockerfile` e healthcheck.  
+
+### Vercel
+
+Este projeto é uma **API Node stateful** (servidor HTTP long-lived). A Vercel é otimizada para frontends e funções serverless; hospedar Nest aqui exige adaptação (serverless wrapper, cold starts, timeouts). **Recomendação:** rode a API em Render/Railway/Fly/Kubernetes e use a Vercel apenas para o frontend ou para proxies leves. O arquivo [`vercel.json`](./vercel.json) mantém apenas metadados de build para referência em monorepos; não substitui um runtime HTTP dedicado.
+
+## Testes
+
+```bash
+npm run test
+npm run test:e2e
+```
+
+Os e2e sobrescrevem `PrismaService` com mocks para não exigir Postgres na CI leve.
+
+## Como vender
+
+TrackFlow API é um **backend pronto para produto digital** que coleta eventos de uso (page views, cliques, funil) e expõe **analytics cacheável** para dashboards e operações. Use este pacote como:
+
+1. **Produto SaaS de analytics** — vendido por volume de eventos, usuários ativos ou workspaces; destaque SLA, Redis opcional e rate limiting contra abuso.  
+2. **Camada de dados para agências** — ingestão padronizada para vários clientes (`userId` + `metadata` JSON); papers com export CSV ou BI via Postgres.  
+3. **Add-on de compliance-ready logging** — correlation ID ponta a ponta, erros padronizados e health checks facilitam auditoria e contratos enterprise.  
+4. **API white-label** — versionamento `/v1`, OpenAPI publicável e Docker único simplificam integração para parceiros.
+
+**Argumentos de valor:** tempo de implantação (Docker + migrações automáticas), segurança base (JWT, helmet, throttle), escalabilidade horizontal (stateless + Redis compartilhado), e documentação interativa para reduzir custo de suporte.
+
+## Licença
+
+UNLICENSED — ajuste conforme o modelo do seu negócio.
