@@ -1,0 +1,16 @@
+name: Keep Alive
+
+on:
+  schedule:
+    # Runs every 14 minutes (Render free tier sleeps after 15 mins)
+    - cron: '*/14 * * * *'
+  workflow_dispatch: # Allows manual trigger
+
+jobs:
+  ping:
+    name: Ping Service
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send Ping
+        run: |
+          curl -I https://trackflow-ge8f.onrender.com/health/live
