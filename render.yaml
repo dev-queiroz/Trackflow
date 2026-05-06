@@ -1,0 +1,19 @@
+# TrackFlow API — Render Blueprint (https://render.com/docs/blueprint-spec)
+services:
+  - type: web
+    name: trackflow-api
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    healthCheckPath: /health/live
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_URL
+        sync: false
+      - key: JWT_SECRET
+        generateValue: true
+      - key: REDIS_URL
+        sync: false
+      - key: THROTTLE_LIMIT
+        value: "100"
