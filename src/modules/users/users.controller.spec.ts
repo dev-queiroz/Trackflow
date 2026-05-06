@@ -38,9 +38,10 @@ describe('UsersController', () => {
   });
 
   it('findAll delega paginação', async () => {
-    await expect(
-      controller.findAll({ page: 2, limit: 10 }),
-    ).resolves.toEqual({ data: [], meta: {} });
+    await expect(controller.findAll({ page: 2, limit: 10 })).resolves.toEqual({
+      data: [],
+      meta: {},
+    });
     expect(service.findAll).toHaveBeenCalledWith(2, 10);
   });
 

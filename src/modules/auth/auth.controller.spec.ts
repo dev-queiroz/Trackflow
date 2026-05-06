@@ -27,10 +27,19 @@ describe('AuthController', () => {
 
   describe('register', () => {
     it('should call authService.register and return result', async () => {
-      const dto = { email: 'test@test.com', password: 'password123', name: 'Test' };
+      const dto = {
+        email: 'test@test.com',
+        password: 'password123',
+        name: 'Test',
+      };
       const expectedResult = {
         message: 'Usuário criado com sucesso',
-        user: { id: 'uuid-1', email: dto.email, name: dto.name, createdAt: new Date() },
+        user: {
+          id: 'uuid-1',
+          email: dto.email,
+          name: dto.name,
+          createdAt: new Date(),
+        },
       };
       mockAuthService.register.mockResolvedValue(expectedResult);
 

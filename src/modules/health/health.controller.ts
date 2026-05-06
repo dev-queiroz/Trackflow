@@ -24,7 +24,8 @@ export class HealthController {
   @HealthCheck()
   @ApiOperation({
     summary: 'Liveness em /health',
-    description: 'Equivalente a /health/live para probes que apontam apenas para /health.',
+    description:
+      'Equivalente a /health/live para probes que apontam apenas para /health.',
   })
   root() {
     return this.health.check([]);
@@ -49,13 +50,11 @@ export class HealthController {
       'PostgreSQL via Prisma e heap disponível. Caminho fora do prefixo `/v1`.',
   })
   ready() {
-    const heapLimitMb =
-      Number(process.env.HEALTH_HEAP_LIMIT_MB) || 1536;
+    const heapLimitMb = Number(process.env.HEALTH_HEAP_LIMIT_MB) || 1536;
 
     return this.health.check([
       () => this.prismaHealth.pingCheck('database', this.prisma),
-      () =>
-        this.memory.checkHeap('memory_heap', heapLimitMb * 1024 * 1024),
+      () => this.memory.checkHeap('memory_heap', heapLimitMb * 1024 * 1024),
     ]);
   }
 }

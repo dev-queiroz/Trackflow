@@ -27,11 +27,19 @@ describe('HealthController', () => {
         { provide: HealthCheckService, useValue: mockHealth },
         {
           provide: PrismaHealthIndicator,
-          useValue: { pingCheck: jest.fn().mockResolvedValue({ database: { status: 'up' } }) },
+          useValue: {
+            pingCheck: jest
+              .fn()
+              .mockResolvedValue({ database: { status: 'up' } }),
+          },
         },
         {
           provide: MemoryHealthIndicator,
-          useValue: { checkHeap: jest.fn().mockResolvedValue({ memory_heap: { status: 'up' } }) },
+          useValue: {
+            checkHeap: jest
+              .fn()
+              .mockResolvedValue({ memory_heap: { status: 'up' } }),
+          },
         },
         { provide: PrismaService, useValue: {} },
       ],

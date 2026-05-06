@@ -29,9 +29,9 @@ describe('AnalyticsController', () => {
   });
 
   it('getEventsCount delega ao service', async () => {
-    await expect(
-      controller.getEventsCount({ period: '24h' }),
-    ).resolves.toEqual({ count: 10 });
+    await expect(controller.getEventsCount({ period: '24h' })).resolves.toEqual(
+      { count: 10 },
+    );
     expect(service.getEventsCount).toHaveBeenCalledWith({ period: '24h' });
   });
 
@@ -41,7 +41,9 @@ describe('AnalyticsController', () => {
   });
 
   it('getEventsGrouped', async () => {
-    await expect(controller.getEventsGrouped({ period: '7d' })).resolves.toEqual({
+    await expect(
+      controller.getEventsGrouped({ period: '7d' }),
+    ).resolves.toEqual({
       page_view: 10,
     });
     expect(service.getEventsGrouped).toHaveBeenCalledWith({ period: '7d' });

@@ -18,7 +18,9 @@ jest.mock('pino', () => {
 // Mock pino-http
 jest.mock('pino-http', () => {
   return {
-    pinoHttp: jest.fn().mockReturnValue((_req: any, _res: any, next: any) => next()),
+    pinoHttp: jest
+      .fn()
+      .mockReturnValue((_req: any, _res: any, next: any) => next()),
   };
 });
 
@@ -52,9 +54,13 @@ function setupMocks() {
     }),
   );
   jest.doMock('pino-http', () => ({
-    pinoHttp: jest.fn().mockReturnValue((_req: any, _res: any, next: any) => next()),
+    pinoHttp: jest
+      .fn()
+      .mockReturnValue((_req: any, _res: any, next: any) => next()),
   }));
-  jest.doMock('helmet', () => jest.fn().mockReturnValue((_req: any, _res: any, next: any) => next()));
+  jest.doMock('helmet', () =>
+    jest.fn().mockReturnValue((_req: any, _res: any, next: any) => next()),
+  );
   jest.doMock('uuid', () => ({ v4: jest.fn().mockReturnValue('test-uuid') }));
   jest.doMock('@nestjs/core', () => ({
     NestFactory: { create: jest.fn().mockResolvedValue(mockApp) },
@@ -87,9 +93,13 @@ function setupErrorMocks(error: Error) {
     }),
   );
   jest.doMock('pino-http', () => ({
-    pinoHttp: jest.fn().mockReturnValue((_req: any, _res: any, next: any) => next()),
+    pinoHttp: jest
+      .fn()
+      .mockReturnValue((_req: any, _res: any, next: any) => next()),
   }));
-  jest.doMock('helmet', () => jest.fn().mockReturnValue((_req: any, _res: any, next: any) => next()));
+  jest.doMock('helmet', () =>
+    jest.fn().mockReturnValue((_req: any, _res: any, next: any) => next()),
+  );
   jest.doMock('uuid', () => ({ v4: jest.fn().mockReturnValue('test-uuid') }));
   jest.doMock('@nestjs/core', () => ({
     NestFactory: { create: jest.fn().mockRejectedValue(error) },
@@ -179,11 +189,11 @@ describe('bootstrap (main.ts)', () => {
     const { pinoHttp } = require('pino-http');
     expect(pinoHttp).toHaveBeenCalled();
     const pinoHttpConfig = pinoHttp.mock.calls[0][0];
-    
+
     // Test without correlation-id header
     const mockReq1 = { headers: {} };
     expect(pinoHttpConfig.genReqId(mockReq1)).toBe('test-uuid');
-    
+
     // Test with correlation-id header
     const mockReq2 = { headers: { 'x-correlation-id': 'custom-id' } };
     expect(pinoHttpConfig.genReqId(mockReq2)).toBe('custom-id');
@@ -193,7 +203,9 @@ describe('bootstrap (main.ts)', () => {
     const pinoError = new Error('Cannot find module pino-pretty');
     setupErrorMocks(pinoError);
 
-    const mockExit = jest.spyOn(process, 'exit').mockImplementation((() => {}) as any);
+    const mockExit = jest
+      .spyOn(process, 'exit')
+      .mockImplementation((() => {}) as any);
 
     require('./main');
     await new Promise((resolve) => setTimeout(resolve, 100));
@@ -209,7 +221,9 @@ describe('bootstrap (main.ts)', () => {
     const genericError = new Error('Something went wrong');
     setupErrorMocks(genericError);
 
-    const mockExit = jest.spyOn(process, 'exit').mockImplementation((() => {}) as any);
+    const mockExit = jest
+      .spyOn(process, 'exit')
+      .mockImplementation((() => {}) as any);
 
     require('./main');
     await new Promise((resolve) => setTimeout(resolve, 100));

@@ -9,11 +9,7 @@ import {
   Query,
   UseGuards,
 } from '@nestjs/common';
-import {
-  ApiTags,
-  ApiOperation,
-  ApiBearerAuth,
-} from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiBearerAuth } from '@nestjs/swagger';
 import { Role } from '@prisma/client';
 import { UsersService } from './users.service';
 import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
@@ -40,10 +36,7 @@ export class UsersController {
 
   @Patch('me')
   @ApiOperation({ summary: 'Atualizar próprio perfil' })
-  updateMe(
-    @CurrentUser() user: JwtPayloadUser,
-    @Body() dto: UpdateUserDto,
-  ) {
+  updateMe(@CurrentUser() user: JwtPayloadUser, @Body() dto: UpdateUserDto) {
     return this.usersService.update(user.id, dto, user);
   }
 

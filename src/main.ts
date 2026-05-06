@@ -9,7 +9,11 @@ import helmet from 'helmet';
 import { v4 as uuidv4 } from 'uuid';
 import type { Request, Response, NextFunction } from 'express';
 
-function correlationMiddleware(req: Request, res: Response, next: NextFunction) {
+function correlationMiddleware(
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) {
   const incoming = req.headers['x-correlation-id'];
   const id =
     (typeof (req as Request & { id?: string }).id === 'string'

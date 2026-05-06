@@ -38,7 +38,11 @@ export class HttpExceptionFilter implements ExceptionFilter {
       const messageRaw = bodyObj.message ?? exception.message;
       const message = Array.isArray(messageRaw)
         ? messageRaw
-        : String(messageRaw);
+        : typeof messageRaw === 'string'
+          ? messageRaw
+          : typeof messageRaw === 'object' && messageRaw !== null
+            ? JSON.stringify(messageRaw)
+            : String(messageRaw as any);
 
       response.status(status).json({
         statusCode: status,
@@ -56,7 +60,10 @@ export class HttpExceptionFilter implements ExceptionFilter {
 
     const message =
       exception instanceof Error ? exception.message : 'Internal server error';
-    this.logger.error(message, exception instanceof Error ? exception.stack : '');
+    this.logger.error(
+      message,
+      exception instanceof Error ? exception.stack : '',
+    );
 
     response.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
       statusCode: HttpStatus.INTERNAL_SERVER_ERROR,

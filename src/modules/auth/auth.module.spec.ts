@@ -39,10 +39,7 @@ describe('AuthModule', () => {
     process.env.JWT_EXPIRES_IN = '2h';
 
     const module = await Test.createTestingModule({
-      imports: [
-        ConfigModule.forRoot({ isGlobal: true }),
-        AuthModule,
-      ],
+      imports: [ConfigModule.forRoot({ isGlobal: true }), AuthModule],
     }).compile();
 
     expect(module).toBeDefined();
@@ -53,10 +50,7 @@ describe('AuthModule', () => {
     delete process.env.JWT_EXPIRES_IN;
 
     const module = await Test.createTestingModule({
-      imports: [
-        ConfigModule.forRoot({ isGlobal: true }),
-        AuthModule,
-      ],
+      imports: [ConfigModule.forRoot({ isGlobal: true }), AuthModule],
     }).compile();
 
     expect(module).toBeDefined();

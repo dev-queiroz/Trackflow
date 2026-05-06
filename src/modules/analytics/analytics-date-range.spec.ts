@@ -27,14 +27,18 @@ describe('buildEventCreatedAtWhere', () => {
       from: '2026-05-01T00:00:00.000Z',
       to: '2026-05-02T00:00:00.000Z',
     });
-    expect(where.createdAt?.gte?.toISOString()).toBe('2026-05-01T00:00:00.000Z');
-    expect(where.createdAt?.lte?.toISOString()).toBe('2026-05-02T00:00:00.000Z');
+    expect(where.createdAt?.gte?.toISOString()).toBe(
+      '2026-05-01T00:00:00.000Z',
+    );
+    expect(where.createdAt?.lte?.toISOString()).toBe(
+      '2026-05-02T00:00:00.000Z',
+    );
   });
 
   it('rejeita from inválido', () => {
-    expect(() =>
-      buildEventCreatedAtWhere({ from: 'não-é-data' }),
-    ).toThrow(BadRequestException);
+    expect(() => buildEventCreatedAtWhere({ from: 'não-é-data' })).toThrow(
+      BadRequestException,
+    );
   });
 
   it('rejeita quando to < from', () => {

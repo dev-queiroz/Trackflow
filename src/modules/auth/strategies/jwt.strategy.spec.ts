@@ -60,7 +60,9 @@ describe('JwtStrategy', () => {
       const payload = { sub: 'non-existent-id' };
       (prisma.user.findUnique as jest.Mock).mockResolvedValue(null);
 
-      await expect(strategy.validate(payload)).rejects.toThrow(UnauthorizedException);
+      await expect(strategy.validate(payload)).rejects.toThrow(
+        UnauthorizedException,
+      );
     });
   });
 });

@@ -49,7 +49,11 @@ describe('EventsService', () => {
         eventName: 'button_clicked',
         metadata: { page: 'checkout' },
         createdAt: new Date('2026-01-01'),
-        user: { id: createEventDto.userId, email: 'test@test.com', name: 'Test' },
+        user: {
+          id: createEventDto.userId,
+          email: 'test@test.com',
+          name: 'Test',
+        },
       };
       mockPrismaService.event.create.mockResolvedValue(mockEvent);
 
@@ -89,7 +93,11 @@ describe('EventsService', () => {
         eventName: 'page_view',
         metadata: {},
         createdAt: new Date(),
-        user: { id: dtoWithoutMetadata.userId, email: 'test@test.com', name: 'Test' },
+        user: {
+          id: dtoWithoutMetadata.userId,
+          email: 'test@test.com',
+          name: 'Test',
+        },
       };
       mockPrismaService.event.create.mockResolvedValue(mockEvent);
 
@@ -120,7 +128,9 @@ describe('EventsService', () => {
       };
 
       await expect(service.create(dto)).rejects.toThrow(BadRequestException);
-      await expect(service.create(dto)).rejects.toThrow('eventName é obrigatório');
+      await expect(service.create(dto)).rejects.toThrow(
+        'eventName é obrigatório',
+      );
     });
 
     it('should throw BadRequestException when prisma throws an error', async () => {

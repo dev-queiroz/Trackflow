@@ -8,7 +8,8 @@ export class AnalyticsQueryDto {
   period?: '24h' | '7d' | '30d';
 
   @ApiPropertyOptional({
-    description: 'Início do intervalo (ISO 8601). Sobrepõe `period` se combinado com `to`.',
+    description:
+      'Início do intervalo (ISO 8601). Sobrepõe `period` se combinado com `to`.',
     example: '2026-05-01T00:00:00.000Z',
   })
   @IsOptional()

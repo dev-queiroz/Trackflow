@@ -103,7 +103,10 @@ describe('AuthService', () => {
     });
 
     it('should register user without name', async () => {
-      const dtoWithoutName = { email: 'noname@example.com', password: 'pass123456' };
+      const dtoWithoutName = {
+        email: 'noname@example.com',
+        password: 'pass123456',
+      };
       mockPrismaService.user.findUnique.mockResolvedValue(null);
       (bcrypt.hash as jest.Mock).mockResolvedValue('hashed');
       mockPrismaService.user.create.mockResolvedValue({

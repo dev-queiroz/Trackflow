@@ -9,9 +9,9 @@ describe('AnalyticsService', () => {
   const mockPrisma = {
     event: {
       count: jest.fn().mockResolvedValue(10),
-      groupBy: jest.fn().mockResolvedValue([
-        { eventName: 'click', _count: { eventName: 10 } },
-      ]),
+      groupBy: jest
+        .fn()
+        .mockResolvedValue([{ eventName: 'click', _count: { eventName: 10 } }]),
     },
   };
 
