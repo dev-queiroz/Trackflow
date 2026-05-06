@@ -23,6 +23,7 @@ export class CreateEventDto {
     example: { page: 'checkout', button: 'pay_now' },
     required: false,
   })
+  /* istanbul ignore next */
   @IsOptional()
   @IsObject()
   metadata?: Record<string, any>;

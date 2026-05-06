@@ -9,4 +9,4 @@ import { PrismaModule } from '../../prisma/prisma.module';
   providers: [EventsService],
   exports: [EventsService],
 })
-export class EventsModule {}
+export class EventsModule { }
