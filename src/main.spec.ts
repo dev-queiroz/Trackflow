@@ -1,6 +1,10 @@
 /* eslint-disable @typescript-eslint/no-require-imports */
 import { Logger } from '@nestjs/common';
 
+jest.mock('./bootstrap/configure-nest-app', () => ({
+  configureNestApp: jest.fn(),
+}));
+
 // Mock pino
 jest.mock('pino', () => {
   return jest.fn().mockReturnValue({
@@ -18,12 +22,21 @@ jest.mock('pino-http', () => {
   };
 });
 
+jest.mock('helmet', () => {
+  return jest.fn().mockReturnValue((_req: any, _res: any, next: any) => next());
+});
+
+jest.mock('uuid', () => ({
+  v4: jest.fn().mockReturnValue('test-uuid'),
+}));
+
 const mockGet = jest.fn();
 
 const mockApp = {
   useLogger: jest.fn(),
   use: jest.fn(),
   useGlobalPipes: jest.fn(),
+  useGlobalFilters: jest.fn(),
   enableCors: jest.fn(),
   listen: jest.fn().mockResolvedValue(undefined),
   get: jest.fn().mockReturnValue({ get: mockGet }),
@@ -41,6 +54,8 @@ function setupMocks() {
   jest.doMock('pino-http', () => ({
     pinoHttp: jest.fn().mockReturnValue((_req: any, _res: any, next: any) => next()),
   }));
+  jest.doMock('helmet', () => jest.fn().mockReturnValue((_req: any, _res: any, next: any) => next()));
+  jest.doMock('uuid', () => ({ v4: jest.fn().mockReturnValue('test-uuid') }));
   jest.doMock('@nestjs/core', () => ({
     NestFactory: { create: jest.fn().mockResolvedValue(mockApp) },
   }));
@@ -74,6 +89,8 @@ function setupErrorMocks(error: Error) {
   jest.doMock('pino-http', () => ({
     pinoHttp: jest.fn().mockReturnValue((_req: any, _res: any, next: any) => next()),
   }));
+  jest.doMock('helmet', () => jest.fn().mockReturnValue((_req: any, _res: any, next: any) => next()));
+  jest.doMock('uuid', () => ({ v4: jest.fn().mockReturnValue('test-uuid') }));
   jest.doMock('@nestjs/core', () => ({
     NestFactory: { create: jest.fn().mockRejectedValue(error) },
   }));
@@ -122,9 +139,9 @@ describe('bootstrap (main.ts)', () => {
     await new Promise((resolve) => setTimeout(resolve, 100));
 
     const { NestFactory } = require('@nestjs/core');
+    const { configureNestApp } = require('./bootstrap/configure-nest-app');
     expect(NestFactory.create).toHaveBeenCalled();
-    expect(mockApp.useGlobalPipes).toHaveBeenCalled();
-    expect(mockApp.enableCors).toHaveBeenCalled();
+    expect(configureNestApp).toHaveBeenCalledWith(mockApp);
     expect(mockApp.listen).toHaveBeenCalledWith(4000);
   });
 
@@ -153,6 +170,25 @@ describe('bootstrap (main.ts)', () => {
     expect(mockApp.listen).toHaveBeenCalledWith(3000);
   });
 
+  it('should configure pinoHttp with genReqId', async () => {
+    process.env.NODE_ENV = 'development';
+    setupMocks();
+    require('./main');
+    await new Promise((resolve) => setTimeout(resolve, 100));
+
+    const { pinoHttp } = require('pino-http');
+    expect(pinoHttp).toHaveBeenCalled();
+    const pinoHttpConfig = pinoHttp.mock.calls[0][0];
+    
+    // Test without correlation-id header
+    const mockReq1 = { headers: {} };
+    expect(pinoHttpConfig.genReqId(mockReq1)).toBe('test-uuid');
+    
+    // Test with correlation-id header
+    const mockReq2 = { headers: { 'x-correlation-id': 'custom-id' } };
+    expect(pinoHttpConfig.genReqId(mockReq2)).toBe('custom-id');
+  });
+
   it('should handle pino-pretty error on bootstrap failure', async () => {
     const pinoError = new Error('Cannot find module pino-pretty');
     setupErrorMocks(pinoError);
@@ -179,7 +215,7 @@ describe('bootstrap (main.ts)', () => {
     await new Promise((resolve) => setTimeout(resolve, 100));
 
     expect(console.error).toHaveBeenCalledWith(
-      '❌ Failed to start application:',
+      'Failed to start application:',
       'Something went wrong',
     );
     expect(mockExit).toHaveBeenCalledWith(1);
