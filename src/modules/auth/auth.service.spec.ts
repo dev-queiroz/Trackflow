@@ -3,6 +3,7 @@ import { AuthService } from './auth.service';
 import { PrismaService } from '../../prisma/prisma.service';
 import { JwtService } from '@nestjs/jwt';
 import { ConflictException, UnauthorizedException } from '@nestjs/common';
+import { Role } from '@prisma/client';
 import * as bcrypt from 'bcryptjs';
 
 jest.mock('bcryptjs');
@@ -53,6 +54,7 @@ describe('AuthService', () => {
         id: 'uuid-1',
         email: registerDto.email,
         name: registerDto.name,
+        role: Role.USER,
         createdAt: new Date('2026-01-01'),
       });
 
@@ -64,6 +66,7 @@ describe('AuthService', () => {
           id: 'uuid-1',
           email: registerDto.email,
           name: registerDto.name,
+          role: Role.USER,
           createdAt: new Date('2026-01-01'),
         },
       });
@@ -81,6 +84,7 @@ describe('AuthService', () => {
           id: true,
           email: true,
           name: true,
+          role: true,
           createdAt: true,
         },
       });
@@ -106,6 +110,7 @@ describe('AuthService', () => {
         id: 'uuid-2',
         email: dtoWithoutName.email,
         name: undefined,
+        role: Role.USER,
         createdAt: new Date(),
       });
 
@@ -122,6 +127,7 @@ describe('AuthService', () => {
           id: true,
           email: true,
           name: true,
+          role: true,
           createdAt: true,
         },
       });

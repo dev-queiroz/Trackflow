@@ -3,6 +3,7 @@ import { JwtStrategy } from './jwt.strategy';
 import { ConfigService } from '@nestjs/config';
 import { PrismaService } from '../../../prisma/prisma.service';
 import { UnauthorizedException } from '@nestjs/common';
+import { Role } from '@prisma/client';
 
 describe('JwtStrategy', () => {
   let strategy: JwtStrategy;
@@ -38,7 +39,12 @@ describe('JwtStrategy', () => {
   describe('validate', () => {
     it('should return user if found', async () => {
       const payload = { sub: 'user-id', email: 'test@example.com' };
-      const mockUser = { id: 'user-id', email: 'test@example.com', name: 'Test User' };
+      const mockUser = {
+        id: 'user-id',
+        email: 'test@example.com',
+        name: 'Test User',
+        role: Role.USER,
+      };
       (prisma.user.findUnique as jest.Mock).mockResolvedValue(mockUser);
 
       const result = await strategy.validate(payload);
@@ -46,7 +52,7 @@ describe('JwtStrategy', () => {
       expect(result).toEqual(mockUser);
       expect(prisma.user.findUnique).toHaveBeenCalledWith({
         where: { id: 'user-id' },
-        select: { id: true, email: true, name: true },
+        select: { id: true, email: true, name: true, role: true },
       });
     });
 
