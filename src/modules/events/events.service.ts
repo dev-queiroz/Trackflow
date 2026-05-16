@@ -7,12 +7,11 @@ export class EventsService {
   constructor(private prisma: PrismaService) {}
 
   async create(dto: CreateEventDto) {
-    // Validação crítica conforme especificação
     if (!dto.userId) {
-      throw new BadRequestException('userId é obrigatório');
+      throw new BadRequestException('userId is required');
     }
     if (!dto.eventName) {
-      throw new BadRequestException('eventName é obrigatório');
+      throw new BadRequestException('eventName is required');
     }
 
     try {
@@ -30,7 +29,7 @@ export class EventsService {
       });
 
       return {
-        message: 'Evento registrado com sucesso',
+        message: 'Event recorded successfully',
         event: {
           id: event.id,
           eventName: event.eventName,
@@ -39,8 +38,8 @@ export class EventsService {
         },
       };
     } catch (error) {
-      console.error('Erro ao salvar evento:', error);
-      throw new BadRequestException('Erro ao processar evento');
+      console.error('Error saving event:', error);
+      throw new BadRequestException('Error processing event');
     }
   }
 
