@@ -60,7 +60,7 @@ describe('EventsService', () => {
       const result = await service.create(createEventDto);
 
       expect(result).toEqual({
-        message: 'Evento registrado com sucesso',
+        message: 'Event recorded successfully',
         event: {
           id: mockEvent.id,
           eventName: mockEvent.eventName,
@@ -103,7 +103,7 @@ describe('EventsService', () => {
 
       const result = await service.create(dtoWithoutMetadata);
 
-      expect(result.message).toBe('Evento registrado com sucesso');
+      expect(result.message).toBe('Event recorded successfully');
       expect(mockPrismaService.event.create).toHaveBeenCalledWith(
         expect.objectContaining({
           data: expect.objectContaining({
@@ -117,7 +117,7 @@ describe('EventsService', () => {
       const dto = { userId: '', eventName: 'click', metadata: {} };
 
       await expect(service.create(dto)).rejects.toThrow(BadRequestException);
-      await expect(service.create(dto)).rejects.toThrow('userId é obrigatório');
+      await expect(service.create(dto)).rejects.toThrow('userId is required');
     });
 
     it('should throw BadRequestException when eventName is empty', async () => {
@@ -129,7 +129,7 @@ describe('EventsService', () => {
 
       await expect(service.create(dto)).rejects.toThrow(BadRequestException);
       await expect(service.create(dto)).rejects.toThrow(
-        'eventName é obrigatório',
+        'eventName is required',
       );
     });
 

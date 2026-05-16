@@ -33,7 +33,7 @@ describe('EventsController', () => {
         metadata: { page: 'checkout' },
       };
       const expectedResult = {
-        message: 'Evento registrado com sucesso',
+        message: 'Event recorded successfully',
         event: { id: 'event-1', ...dto, createdAt: new Date() },
       };
       mockEventsService.create.mockResolvedValue(expectedResult);
