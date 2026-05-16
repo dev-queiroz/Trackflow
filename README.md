@@ -121,3 +121,4 @@ This project is licensed under MIT. See [LICENSE](LICENSE) for details.
 <p align="center">
   Made with love by <a href="https://github.com/dev-queiroz">dev-queiroz</a>
 </p>
+
