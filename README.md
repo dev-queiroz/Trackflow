@@ -1,4 +1,4 @@
-# 📊 TrackFlow API
+# 📊 Tracked API
 
 ![NestJS](https://img.shields.io/badge/nestjs-%23E0234E.svg?style=for-the-badge&logo=nestjs&logoColor=white)
 ![TypeScript](https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white)
@@ -10,7 +10,7 @@
 
 **API moderna de ingestão de eventos e analytics em tempo real.**
 
-Uma solução backend robusta para rastrear comportamento de usuários, medir engajamento e gerar métricas agregadas. Inspirada em líderes como Segment, Mixpanel e Amplitude, o **TrackFlow** oferece uma arquitetura limpa, performática e pronta para produção.
+Uma solução backend robusta para rastrear comportamento de usuários, medir engajamento e gerar métricas agregadas. Inspirada em líderes como Segment, Mixpanel e Amplitude, o **Tracked** oferece uma arquitetura limpa, performática e pronta para produção.
 
 ---
 
@@ -51,8 +51,8 @@ Uma solução backend robusta para rastrear comportamento de usuários, medir en
 
 ```bash
 # 1. Clone o repositório
-git clone https://github.com/dev-queiroz/Trackflow.git
-cd trackflow-api
+git clone https://github.com/dev-queiroz/tracked.git
+cd tracked-api
 
 # 2. Instale as dependências
 npm install
