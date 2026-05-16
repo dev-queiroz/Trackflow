@@ -3,14 +3,14 @@ version: '3.9'
 services:
   postgres:
     image: postgres:16-alpine
-    container_name: trackflow-postgres
+    container_name: tracked-postgres
     restart: always
     ports:
       - "5432:5432"
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: trackflow
+      POSTGRES_DB: tracked
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
@@ -21,7 +21,7 @@ services:
 
   adminer:
     image: adminer:latest
-    container_name: trackflow-adminer
+    container_name: tracked-adminer
     restart: always
     ports:
       - "8080:8080"

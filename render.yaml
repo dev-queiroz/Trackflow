@@ -1,7 +1,7 @@
-# TrackFlow API — Render Blueprint (https://render.com/docs/blueprint-spec)
+# Tracked API - Render Blueprint (https://render.com/docs/blueprint-spec)
 services:
   - type: web
-    name: trackflow-api
+    name: tracked-api
     runtime: docker
     dockerfilePath: ./Dockerfile
     dockerContext: .

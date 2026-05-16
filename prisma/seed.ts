@@ -15,12 +15,12 @@ async function main() {
   const password = await bcrypt.hash('password123', 10);
 
   const admin = await prisma.user.upsert({
-    where: { email: 'admin@trackflow.com' },
+    where: { email: 'admin@tracked.com' },
     update: { role: Role.ADMIN },
     create: {
-      email: 'admin@trackflow.com',
+      email: 'admin@tracked.com',
       password,
-      name: 'Admin TrackFlow',
+      name: 'Admin tracked',
       role: Role.ADMIN,
       events: {
         create: [
@@ -42,12 +42,12 @@ async function main() {
   });
 
   const demo = await prisma.user.upsert({
-    where: { email: 'demo@trackflow.com' },
+    where: { email: 'demo@tracked.com' },
     update: {},
     create: {
-      email: 'demo@trackflow.com',
+      email: 'demo@tracked.com',
       password,
-      name: 'Usuário Demo',
+      name: 'Demo User',
       role: Role.USER,
       events: {
         create: [
@@ -65,20 +65,20 @@ async function main() {
   });
 
   await prisma.user.upsert({
-    where: { email: 'inactive@trackflow.com' },
+    where: { email: 'inactive@tracked.com' },
     update: {},
     create: {
-      email: 'inactive@trackflow.com',
+      email: 'inactive@tracked.com',
       password,
-      name: 'Sem eventos',
+      name: 'No Events',
       role: Role.USER,
     },
   });
 
-  console.log('Seed concluído.');
+  console.log('Seed completed.');
   console.table([
-    { email: admin.email, role: admin.role, senhaDemo: 'password123' },
-    { email: demo.email, role: demo.role, senhaDemo: 'password123' },
+    { email: admin.email, role: admin.role, demoPassword: 'password123' },
+    { email: demo.email, role: demo.role, demoPassword: 'password123' },
   ]);
 }
 
