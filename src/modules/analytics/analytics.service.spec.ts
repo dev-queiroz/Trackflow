@@ -32,13 +32,13 @@ describe('AnalyticsService', () => {
     expect(service).toBeDefined();
   });
 
-  it('getEventsCount sem filtro', async () => {
+  it('getEventsCount without filter', async () => {
     const result = await service.getEventsCount({});
     expect(result).toEqual({ count: 10 });
     expect(prisma.event.count).toHaveBeenCalledWith({ where: {} });
   });
 
-  it('getEventsCount com período', async () => {
+  it('getEventsCount with period', async () => {
     const result = await service.getEventsCount({ period: '24h' });
     expect(result).toEqual({ count: 10 });
     expect(prisma.event.count).toHaveBeenCalled();

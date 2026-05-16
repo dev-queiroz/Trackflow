@@ -5,11 +5,11 @@ import {
 } from './analytics-date-range';
 
 describe('buildEventCreatedAtWhere', () => {
-  it('retorna vazio quando não há filtros', () => {
+  it('returns empty when there are no filters', () => {
     expect(buildEventCreatedAtWhere({})).toEqual({});
   });
 
-  it('aplica período relativo (~24h)', () => {
+  it('applies a relative period (~24h)', () => {
     const q: AnalyticsDateQuery = { period: '24h' };
     const where = buildEventCreatedAtWhere(q);
     expect(where.createdAt?.gte).toBeInstanceOf(Date);
@@ -22,7 +22,7 @@ describe('buildEventCreatedAtWhere', () => {
     expect(span).toBeLessThanOrEqual(day + 100);
   });
 
-  it('intervalo explícito from/to', () => {
+  it('applies an explicit from/to range', () => {
     const where = buildEventCreatedAtWhere({
       from: '2026-05-01T00:00:00.000Z',
       to: '2026-05-02T00:00:00.000Z',
@@ -35,13 +35,13 @@ describe('buildEventCreatedAtWhere', () => {
     );
   });
 
-  it('rejeita from inválido', () => {
-    expect(() => buildEventCreatedAtWhere({ from: 'não-é-data' })).toThrow(
+  it('rejects an invalid from value', () => {
+    expect(() => buildEventCreatedAtWhere({ from: 'not-a-date' })).toThrow(
       BadRequestException,
     );
   });
 
-  it('rejeita quando to < from', () => {
+  it('rejects when to < from', () => {
     expect(() =>
       buildEventCreatedAtWhere({
         from: '2026-05-10T00:00:00.000Z',
