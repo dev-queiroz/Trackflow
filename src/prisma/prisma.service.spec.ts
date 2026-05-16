@@ -59,7 +59,7 @@ describe('PrismaService', () => {
     it('should log success message', async () => {
       await service.onModuleInit();
       expect(console.log).toHaveBeenCalledWith(
-        '🚀 Prisma 7 conectado com sucesso via Driver Adapter',
+        'Prisma 7 connected successfully via Driver Adapter',
       );
     });
   });

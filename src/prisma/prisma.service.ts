@@ -20,7 +20,7 @@ export class PrismaService
 
   async onModuleInit() {
     await this.$connect();
-    console.log('🚀 Prisma 7 conectado com sucesso via Driver Adapter');
+    console.log('Prisma 7 connected successfully via Driver Adapter');
   }
 
   async onModuleDestroy() {
