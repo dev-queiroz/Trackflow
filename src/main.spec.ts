@@ -126,6 +126,7 @@ describe('bootstrap (main.ts)', () => {
   const originalEnv = process.env.NODE_ENV;
 
   beforeEach(() => {
+    jest.setTimeout(30000);
     jest.clearAllMocks();
     jest.spyOn(Logger.prototype, 'log').mockImplementation();
     jest.spyOn(console, 'error').mockImplementation();

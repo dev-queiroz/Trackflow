@@ -6,7 +6,7 @@ import {
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { HttpExceptionFilter } from '../common/filters/http-exception.filter';
 
-/** Rotas fora de `/v1` — probes e documentação */
+/** Routes outside `/v1` - probes and documentation */
 const GLOBAL_PREFIX_EXCLUDES = [
   { path: 'health', method: RequestMethod.ALL },
   { path: 'health/live', method: RequestMethod.ALL },
@@ -37,7 +37,7 @@ export function configureNestApp(app: INestApplication): void {
   });
 
   const config = new DocumentBuilder()
-    .setTitle('TrackFlow API')
+    .setTitle('Tracked API')
     .setDescription('Event ingestion and analytics (REST API v1)')
     .setVersion('1.0')
     .addBearerAuth(

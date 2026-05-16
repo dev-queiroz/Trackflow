@@ -9,24 +9,7 @@ import helmet from 'helmet';
 import { v4 as uuidv4 } from 'uuid';
 import type { Request, Response, NextFunction } from 'express';
 
-function correlationMiddleware(
-  req: Request,
-  res: Response,
-  next: NextFunction,
-) {
-  const incoming = req.headers['x-correlation-id'];
-  const id =
-    (typeof (req as Request & { id?: string }).id === 'string'
-      ? (req as Request & { id?: string }).id
-      : undefined) ??
-    (typeof incoming === 'string' ? incoming : undefined) ??
-    uuidv4();
-
-  (req as Request & { id?: string; correlationId?: string }).id = id;
-  (req as Request & { correlationId?: string }).correlationId = id;
-  res.setHeader('x-correlation-id', id);
-  next();
-}
+import { correlationMiddleware } from './common/middleware/correlation.middleware';
 
 async function bootstrap() {
   const isProduction = process.env.NODE_ENV === 'production';
@@ -76,14 +59,14 @@ async function bootstrap() {
   await app.listen(port);
 
   const startupLogger = new Logger('Bootstrap');
-  startupLogger.log(`TrackFlow API — http://localhost:${port}/v1`);
-  startupLogger.log(`OpenAPI — http://localhost:${port}/docs`);
+  startupLogger.log(`Tracked API - http://localhost:${port}/v1`);
+  startupLogger.log(`OpenAPI - http://localhost:${port}/docs`);
 }
 
 bootstrap().catch((error: Error) => {
   if (error.message.includes('pino-pretty')) {
     console.error(
-      'Erro: pino-pretty não encontrado. Execute: npm install pino-pretty --save-dev',
+      'Error: pino-pretty not found. Run: npm install pino-pretty --save-dev',
     );
   } else {
     console.error('Failed to start application:', error.message);
