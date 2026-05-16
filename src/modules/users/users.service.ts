@@ -26,7 +26,7 @@ export class UsersService {
 
   private assertSelfOrAdmin(actor: JwtPayloadUser, targetId: string) {
     if (actor.role !== Role.ADMIN && actor.id !== targetId) {
-      throw new ForbiddenException('Permissão negada');
+      throw new ForbiddenException('Permission denied');
     }
   }
 
@@ -60,7 +60,7 @@ export class UsersService {
       select: publicSelect,
     });
     if (!user) {
-      throw new NotFoundException('Usuário não encontrado');
+      throw new NotFoundException('User not found');
     }
     return user;
   }
@@ -71,7 +71,7 @@ export class UsersService {
       select: publicSelect,
     });
     if (!user) {
-      throw new NotFoundException('Usuário não encontrado');
+      throw new NotFoundException('User not found');
     }
     return user;
   }
@@ -81,7 +81,7 @@ export class UsersService {
       where: { email: dto.email },
     });
     if (existing) {
-      throw new ConflictException('Email já está em uso');
+      throw new ConflictException('Email is already in use');
     }
 
     const hashed = await bcrypt.hash(dto.password, 10);
@@ -102,7 +102,7 @@ export class UsersService {
 
     const existing = await this.prisma.user.findUnique({ where: { id } });
     if (!existing) {
-      throw new NotFoundException('Usuário não encontrado');
+      throw new NotFoundException('User not found');
     }
 
     if (dto.email && dto.email !== existing.email) {
@@ -110,7 +110,7 @@ export class UsersService {
         where: { email: dto.email },
       });
       if (taken) {
-        throw new ConflictException('Email já está em uso');
+        throw new ConflictException('Email is already in use');
       }
     }
 
@@ -139,7 +139,7 @@ export class UsersService {
     try {
       await this.prisma.user.delete({ where: { id } });
     } catch {
-      throw new NotFoundException('Usuário não encontrado');
+      throw new NotFoundException('User not found');
     }
 
     return { deleted: true, id };

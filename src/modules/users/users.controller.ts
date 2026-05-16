@@ -29,19 +29,19 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Get('me')
-  @ApiOperation({ summary: 'Perfil do usuário autenticado' })
+  @ApiOperation({ summary: 'Authenticated user profile' })
   getMe(@CurrentUser() user: JwtPayloadUser) {
     return this.usersService.findProfile(user);
   }
 
   @Patch('me')
-  @ApiOperation({ summary: 'Atualizar próprio perfil' })
+  @ApiOperation({ summary: 'Update own profile' })
   updateMe(@CurrentUser() user: JwtPayloadUser, @Body() dto: UpdateUserDto) {
     return this.usersService.update(user.id, dto, user);
   }
 
   @Delete('me')
-  @ApiOperation({ summary: 'Remover própria conta' })
+  @ApiOperation({ summary: 'Delete own account' })
   removeMe(@CurrentUser() user: JwtPayloadUser) {
     return this.usersService.remove(user.id, user);
   }
@@ -49,7 +49,7 @@ export class UsersController {
   @Post()
   @UseGuards(RolesGuard)
   @Roles(Role.ADMIN)
-  @ApiOperation({ summary: '[Admin] Criar usuário' })
+  @ApiOperation({ summary: '[Admin] Create user' })
   adminCreate(@Body() dto: AdminCreateUserDto) {
     return this.usersService.adminCreate(dto);
   }
@@ -57,7 +57,7 @@ export class UsersController {
   @Get()
   @UseGuards(RolesGuard)
   @Roles(Role.ADMIN)
-  @ApiOperation({ summary: '[Admin] Listar usuários' })
+  @ApiOperation({ summary: '[Admin] List users' })
   findAll(@Query() query: PaginationQueryDto) {
     const page = query.page ?? 1;
     const limit = query.limit ?? 50;
@@ -65,13 +65,13 @@ export class UsersController {
   }
 
   @Get(':id')
-  @ApiOperation({ summary: 'Consultar usuário (próprio ou admin)' })
+  @ApiOperation({ summary: 'Get user (self or admin)' })
   findOne(@Param('id') id: string, @CurrentUser() user: JwtPayloadUser) {
     return this.usersService.findOne(id, user);
   }
 
   @Patch(':id')
-  @ApiOperation({ summary: 'Atualizar usuário (próprio ou admin)' })
+  @ApiOperation({ summary: 'Update user (self or admin)' })
   update(
     @Param('id') id: string,
     @Body() dto: UpdateUserDto,
@@ -81,7 +81,7 @@ export class UsersController {
   }
 
   @Delete(':id')
-  @ApiOperation({ summary: 'Remover usuário (próprio ou admin)' })
+  @ApiOperation({ summary: 'Delete user (self or admin)' })
   remove(@Param('id') id: string, @CurrentUser() user: JwtPayloadUser) {
     return this.usersService.remove(id, user);
   }
