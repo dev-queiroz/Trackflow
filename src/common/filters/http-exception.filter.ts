@@ -13,6 +13,26 @@ import { Request, Response } from 'express';
 export class HttpExceptionFilter implements ExceptionFilter {
   private readonly logger = new Logger(HttpExceptionFilter.name);
 
+  private normalizeMessage(messageRaw: unknown): string | string[] {
+    if (Array.isArray(messageRaw)) {
+      return messageRaw;
+    }
+
+    if (
+      typeof messageRaw === 'string' ||
+      typeof messageRaw === 'number' ||
+      typeof messageRaw === 'boolean' ||
+      typeof messageRaw === 'bigint' ||
+      typeof messageRaw === 'symbol' ||
+      messageRaw === null ||
+      messageRaw === undefined
+    ) {
+      return String(messageRaw);
+    }
+
+    return JSON.stringify(messageRaw);
+  }
+
   catch(exception: unknown, host: ArgumentsHost): void {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<Response>();
@@ -35,14 +55,8 @@ export class HttpExceptionFilter implements ExceptionFilter {
           ? (resBody as Record<string, unknown>)
           : { message: resBody };
 
-      const messageRaw = bodyObj.message ?? exception.message;
-      const message = Array.isArray(messageRaw)
-        ? messageRaw
-        : typeof messageRaw === 'string'
-          ? messageRaw
-          : typeof messageRaw === 'object' && messageRaw !== null
-            ? JSON.stringify(messageRaw)
-            : String(messageRaw as any);
+      const messageRaw: unknown = bodyObj.message ?? exception.message;
+      const message = this.normalizeMessage(messageRaw);
 
       response.status(status).json({
         statusCode: status,
@@ -68,7 +82,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
     response.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
       statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
       error: 'Internal Server Error',
-      message: 'Erro interno do servidor',
+      message: 'Internal server error',
       path: request.url,
       correlationId: correlationId ?? null,
       timestamp,
