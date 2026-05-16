@@ -1,4 +1,4 @@
-# 📊 TrackFlow API
+# Tracked API
 
 ![NestJS](https://img.shields.io/badge/nestjs-%23E0234E.svg?style=for-the-badge&logo=nestjs&logoColor=white)
 ![TypeScript](https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white)
@@ -8,75 +8,76 @@
 ![GitHub Actions](https://img.shields.io/badge/github%20actions-%232671E5.svg?style=for-the-badge&logo=githubactions&logoColor=white)
 ![Render](https://img.shields.io/badge/Render-%46E3B7?style=for-the-badge&logo=render&logoColor=white)
 
-**API moderna de ingestão de eventos e analytics em tempo real.**
+**Modern event ingestion and real-time analytics API.**
 
-Uma solução backend robusta para rastrear comportamento de usuários, medir engajamento e gerar métricas agregadas. Inspirada em líderes como Segment, Mixpanel e Amplitude, o **TrackFlow** oferece uma arquitetura limpa, performática e pronta para produção.
-
----
-
-## 🚀 Funcionalidades Principais
-
-- **📦 Ingestão de Eventos**: Pipeline robusto com validação rigorosa, suporte a metadata flexível (JSON) e processamento otimizado.
-- **📈 Analytics Inteligente**: Agregue dados instantaneamente. Suporte a contagens, agrupamentos por tipo de evento e filtros temporais (`24h`, `7d`, `30d`) ou intervalos customizados.
-- **🛡️ Segurança Enterprise**:
-  - Autenticação JWT com Refresh Tokens.
-  - Controle de Acesso Baseado em Roles (`RBAC`).
-  - Rate Limiting e proteção contra ataques comuns via Helmet.
-- **🔍 Observabilidade**: Logs estruturados com Pino, Correlation ID em todas as requisições e Health Checks detalhados (Liveness/Readiness).
-- **⚡ Performance**: Sistema de cache inteligente (Redis ou In-memory) para endpoints de analytics e índices otimizados no banco de dados.
-- **🛠️ DX (Developer Experience)**: Documentação interativa via Swagger/OpenAPI e ambiente Docker totalmente configurado.
+A robust backend for tracking user behavior, measuring engagement, and generating aggregated metrics. Inspired by tools like Segment, Mixpanel, and Amplitude, **Tracked API** provides a clean, performant, production-ready architecture.
 
 ---
 
-## 🛠️ Stack Tecnológica
+## Core Features
+
+- **Event Ingestion**: Robust pipeline with strict validation, flexible JSON metadata support, and optimized processing.
+- **Intelligent Analytics**: Aggregate data instantly. Supports counts, grouping by event name, and temporal filters (`24h`, `7d`, `30d`) or custom date ranges.
+- **Enterprise Security**:
+  - JWT authentication with refresh tokens.
+  - Role-based access control (`RBAC`).
+  - Rate limiting and common-attack protection via Helmet.
+- **Observability**: Structured logs with Pino, correlation IDs on every request, and detailed health checks (liveness/readiness).
+- **Performance**: Smart caching (Redis or in-memory) for analytics endpoints and database-friendly indexing.
+- **DX (Developer Experience)**: Interactive Swagger/OpenAPI docs and a fully configured Docker environment.
+
+---
+
+## Tech Stack
 
 - **Core**: [NestJS 11](https://nestjs.com/) + TypeScript
 - **ORM**: [Prisma](https://www.prisma.io/) (PostgreSQL)
 - **Auth**: JWT + Passport
-- **Logs**: Pino + pino-http
+- **Logging**: Pino + pino-http
 - **Docs**: Swagger (OpenAPI 3.0)
 - **Cache**: Redis / Cache Manager
 - **Infra**: Docker, GitHub Actions (CI/CD), Render
 
 ---
 
-## ⚙️ Instalação e Setup
+## Installation and Setup
 
-### Pré-requisitos
+### Prerequisites
+
 - Node.js 20+
-- Docker (opcional, recomendado)
-- PostgreSQL (Local ou Cloud)
+- Docker (optional, recommended)
+- PostgreSQL (local or cloud)
 
-### Passo a Passo
+### Step by Step
 
 ```bash
-# 1. Clone o repositório
+# 1. Clone the repository
 git clone https://github.com/dev-queiroz/Trackflow.git
-cd trackflow-api
+cd tracked-api
 
-# 2. Instale as dependências
+# 2. Install dependencies
 npm install
 
-# 3. Configure as variáveis de ambiente
+# 3. Configure environment variables
 cp .env.example .env
 
-# 4. Prepare o Banco de Dados
+# 4. Prepare the database
 npx prisma generate
 npx prisma db push
 npm run db:seed
 
-# 5. Inicie o servidor
+# 5. Start the server
 npm run start:dev
 ```
 
-A API estará disponível em `http://localhost:3000/v1`
-A documentação interativa em `http://localhost:3000/docs`
+The API will be available at `http://localhost:3000/v1`.
+The interactive documentation will be available at `http://localhost:3000/docs`.
 
 ---
 
-## 🐳 Docker
+## Docker
 
-Para rodar o ambiente completo com PostgreSQL e Redis:
+To run the full environment with PostgreSQL and Redis:
 
 ```bash
 docker-compose up -d
@@ -84,38 +85,39 @@ docker-compose up -d
 
 ---
 
-## 🧪 Testes
+## Tests
 
-O projeto conta com uma suíte de testes completa (Unitários e E2E) com alta cobertura.
+The project includes a complete test suite (unit and e2e) with high coverage.
 
 ```bash
-# Testes unitários
+# Unit tests
 npm run test
 
-# Testes E2E (End-to-End)
+# End-to-end tests
 npm run test:e2e
 
-# Cobertura
+# Coverage
 npm run test:cov
 ```
 
 ---
 
-## 🛰️ CI/CD
+## CI/CD
 
-O projeto possui integração contínua configurada via **GitHub Actions**:
-- **CI**: Lint, Build e Testes automatizados em cada Push/PR.
-- **CD**: Deploy automático para o **Render** após sucesso no pipeline.
-- **Keep-Alive**: Mecanismo que evita o suspensão da instância gratuita do Render.
+Continuous integration is configured through **GitHub Actions**:
+
+- **CI**: Lint, build, and automated tests on every push and pull request.
+- **CD**: Automatic deployment to **Render** after a successful pipeline.
+- **Keep-alive**: Mechanism that prevents the free Render instance from sleeping.
 
 ---
 
-## 📄 Licença
+## License
 
-Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
+This project is licensed under MIT. See [LICENSE](LICENSE) for details.
 
 ---
 
 <p align="center">
-  Feito com ❤️ por <a href="https://github.com/dev-queiroz">dev-queiroz</a>
+  Made with love by <a href="https://github.com/dev-queiroz">dev-queiroz</a>
 </p>
