@@ -9,7 +9,7 @@ import {
 import { Role } from '@prisma/client';
 
 export class AdminCreateUserDto {
-  @ApiProperty({ example: 'novo@trackflow.com' })
+  @ApiProperty({ example: 'novo@tracked.com' })
   @IsEmail()
   email: string;
 

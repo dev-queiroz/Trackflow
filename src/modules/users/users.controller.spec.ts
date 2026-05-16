@@ -37,7 +37,7 @@ describe('UsersController', () => {
     expect(controller).toBeDefined();
   });
 
-  it('findAll delega paginação', async () => {
+  it('findAll delegates pagination', async () => {
     await expect(controller.findAll({ page: 2, limit: 10 })).resolves.toEqual({
       data: [],
       meta: {},
@@ -50,7 +50,7 @@ describe('UsersController', () => {
     expect(service.findAll).toHaveBeenCalledWith(1, 50);
   });
 
-  it('findOne passa ator', async () => {
+  it('findOne passes actor', async () => {
     await controller.findOne('1', actor);
     expect(service.findOne).toHaveBeenCalledWith('1', actor);
   });
@@ -58,5 +58,33 @@ describe('UsersController', () => {
   it('getMe', async () => {
     await expect(controller.getMe(actor)).resolves.toEqual(actor);
     expect(service.findProfile).toHaveBeenCalledWith(actor);
+  });
+
+  it('adminCreate passes dto', async () => {
+    const dto = { email: 'new@test.com', password: 'pwd', name: 'New' };
+    await controller.adminCreate(dto);
+    expect(service.adminCreate).toHaveBeenCalledWith(dto);
+  });
+
+  it('updateMe passes id from actor', async () => {
+    const dto = { name: 'New Name' };
+    await controller.updateMe(actor, dto);
+    expect(service.update).toHaveBeenCalledWith(actor.id, dto, actor);
+  });
+
+  it('removeMe passes id from actor', async () => {
+    await controller.removeMe(actor);
+    expect(service.remove).toHaveBeenCalledWith(actor.id, actor);
+  });
+
+  it('update passes id, dto and actor', async () => {
+    const dto = { name: 'New Name' };
+    await controller.update('u1', dto, actor);
+    expect(service.update).toHaveBeenCalledWith('u1', dto, actor);
+  });
+
+  it('remove passes id and actor', async () => {
+    await controller.remove('u1', actor);
+    expect(service.remove).toHaveBeenCalledWith('u1', actor);
   });
 });
