@@ -29,7 +29,7 @@ export class RolesGuard implements CanActivate {
     const user = request.user;
 
     if (!user || !requiredRoles.includes(user.role)) {
-      throw new ForbiddenException('Permissão negada');
+      throw new ForbiddenException('Permission denied');
     }
 
     return true;
