@@ -61,7 +61,7 @@ describe('AuthService', () => {
       const result = await service.register(registerDto);
 
       expect(result).toEqual({
-        message: 'Usuário criado com sucesso',
+        message: 'User created successfully',
         user: {
           id: 'uuid-1',
           email: registerDto.email,
@@ -119,7 +119,7 @@ describe('AuthService', () => {
 
       const result = await service.register(dtoWithoutName);
 
-      expect(result.message).toBe('Usuário criado com sucesso');
+      expect(result.message).toBe('User created successfully');
       expect(mockPrismaService.user.create).toHaveBeenCalledWith({
         data: {
           email: dtoWithoutName.email,

@@ -33,7 +33,7 @@ describe('AuthController', () => {
         name: 'Test',
       };
       const expectedResult = {
-        message: 'Usuário criado com sucesso',
+        message: 'User created successfully',
         user: {
           id: 'uuid-1',
           email: dto.email,
