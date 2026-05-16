@@ -9,7 +9,7 @@ export class AnalyticsQueryDto {
 
   @ApiPropertyOptional({
     description:
-      'Início do intervalo (ISO 8601). Sobrepõe `period` se combinado com `to`.',
+      'Start of the range (ISO 8601). Overrides `period` when combined with `to`.',
     example: '2026-05-01T00:00:00.000Z',
   })
   @IsOptional()
@@ -17,7 +17,7 @@ export class AnalyticsQueryDto {
   from?: string;
 
   @ApiPropertyOptional({
-    description: 'Fim do intervalo (ISO 8601). Padrão: agora.',
+    description: 'End of the range (ISO 8601). Default: now.',
     example: '2026-05-06T23:59:59.999Z',
   })
   @IsOptional()

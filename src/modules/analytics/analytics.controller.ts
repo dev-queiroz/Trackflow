@@ -13,22 +13,22 @@ export class AnalyticsController {
 
   @Get('events/count')
   @ApiOperation({
-    summary: 'Total de eventos',
+    summary: 'Total events',
     description:
-      'Filtro por `period` ou intervalo explícito `from`/`to` (ISO 8601). Intervalo explícito tem precedência.',
+      'Filter by `period` or an explicit `from`/`to` range (ISO 8601). The explicit range takes precedence.',
   })
   async getEventsCount(@Query() query: AnalyticsQueryDto) {
     return this.analyticsService.getEventsCount(query);
   }
 
   @Get('events/grouped')
-  @ApiOperation({ summary: 'Contagem agrupada por nome do evento' })
+  @ApiOperation({ summary: 'Count grouped by event name' })
   async getEventsGrouped(@Query() query: AnalyticsQueryDto) {
     return this.analyticsService.getEventsGrouped(query);
   }
 
   @Get('users/:id/events/count')
-  @ApiOperation({ summary: 'Total de eventos de um usuário' })
+  @ApiOperation({ summary: 'Total events for a user' })
   async getUserEventsCount(
     @Param('id') id: string,
     @Query() query: AnalyticsQueryDto,

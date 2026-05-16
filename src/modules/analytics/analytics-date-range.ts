@@ -12,7 +12,7 @@ export interface AnalyticsDateQuery {
 function parseInstant(iso: string, label: string): Date {
   const d = new Date(iso);
   if (Number.isNaN(d.getTime())) {
-    throw new BadRequestException(`${label} deve ser uma data ISO 8601 válida`);
+    throw new BadRequestException(`${label} must be a valid ISO 8601 date`);
   }
   return d;
 }
@@ -28,8 +28,8 @@ function periodToMs(period: AnalyticsPeriod): number {
 }
 
 /**
- * Monta filtro Prisma em `createdAt`.
- * Precedência: `from`/`to` explícitos substituem `period`.
+ * Builds a Prisma filter on `createdAt`.
+ * Precedence: explicit `from`/`to` overrides `period`.
  */
 export function buildEventCreatedAtWhere(
   query: AnalyticsDateQuery,
@@ -41,7 +41,9 @@ export function buildEventCreatedAtWhere(
     const toDate = query.to ? parseInstant(query.to, 'to') : now;
 
     if (fromDate && toDate < fromDate) {
-      throw new BadRequestException('"to" deve ser maior ou igual a "from"');
+      throw new BadRequestException(
+        '"to" must be greater than or equal to "from"',
+      );
     }
 
     const range: Prisma.DateTimeFilter = {};

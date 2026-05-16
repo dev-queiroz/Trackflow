@@ -26,14 +26,14 @@ import { PrismaModule } from '../../prisma/prisma.module';
             stores: [
               new Keyv({
                 store: new KeyvRedis(redisUrl),
-                namespace: 'trackflow:analytics',
+                namespace: 'tracked:analytics',
                 ttl,
               }),
             ],
           };
         } catch (err) {
           log.warn(
-            `Redis indisponível para cache de analytics; usando memória. ${(err as Error).message}`,
+            `Redis unavailable for analytics cache; using memory. ${(err as Error).message}`,
           );
           return { ttl };
         }
