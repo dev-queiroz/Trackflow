@@ -61,7 +61,15 @@ describe('HealthController', () => {
     await expect(controller.live()).resolves.toMatchObject({ status: 'ok' });
   });
 
-  it('ready endpoint', async () => {
+  it('ready endpoint executes indicators', async () => {
+    mockHealth.check.mockImplementationOnce(async (indicators) => {
+      for (const fn of indicators) {
+        await fn();
+      }
+      return { status: 'ok' };
+    });
+
     await expect(controller.ready()).resolves.toMatchObject({ status: 'ok' });
+    expect(mockHealth.check).toHaveBeenCalled();
   });
 });

@@ -23,9 +23,9 @@ export class HealthController {
   @Get()
   @HealthCheck()
   @ApiOperation({
-    summary: 'Liveness em /health',
+    summary: 'Liveness on /health',
     description:
-      'Equivalente a /health/live para probes que apontam apenas para /health.',
+      'Equivalent to /health/live for probes that only point to /health.',
   })
   root() {
     return this.health.check([]);
@@ -36,7 +36,7 @@ export class HealthController {
   @ApiOperation({
     summary: 'Liveness',
     description:
-      'Checagem leve para balanceadores (sem dependências externas). Caminho fora do prefixo `/v1`.',
+      'Lightweight check for load balancers (no external dependencies). Path outside the `/v1` prefix.',
   })
   live() {
     return this.health.check([]);
@@ -47,7 +47,7 @@ export class HealthController {
   @ApiOperation({
     summary: 'Readiness',
     description:
-      'PostgreSQL via Prisma e heap disponível. Caminho fora do prefixo `/v1`.',
+      'PostgreSQL via Prisma and available heap. Path outside the `/v1` prefix.',
   })
   ready() {
     const heapLimitMb = Number(process.env.HEALTH_HEAP_LIMIT_MB) || 1536;
