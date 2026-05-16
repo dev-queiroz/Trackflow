@@ -6,7 +6,7 @@ import { AppModule } from '../src/app.module';
 import { configureNestApp } from '../src/bootstrap/configure-nest-app';
 import { PrismaService } from '../src/prisma/prisma.service';
 
-describe('TrackFlow API (e2e)', () => {
+describe('Tracked API (e2e)', () => {
   let app: INestApplication<App>;
 
   const mockPrisma = {
@@ -47,13 +47,13 @@ describe('TrackFlow API (e2e)', () => {
     await app.close();
   });
 
-  it('GET /health/live — disponível fora do prefixo /v1', async () => {
+  it('GET /health/live - available outside the /v1 prefix', async () => {
     const res = await request(app.getHttpServer()).get('/health/live');
     expect(res.status).toBe(200);
     expect(res.body).toMatchObject({ status: 'ok' });
   });
 
-  it('GET /v1/analytics/events/count sem Bearer — 401', async () => {
+  it('GET /v1/analytics/events/count without Bearer - 401', async () => {
     await request(app.getHttpServer())
       .get('/v1/analytics/events/count')
       .expect(401);
